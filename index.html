@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors - lets play</title>
+    <style>
+        body {
+            font-family: 'Press Start 2P', cursive; /* Retro font */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #ff9933, #ff5e62); /* Fiery gradient */
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .game-container {
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.7); /* Dark semi-transparent background */
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 30px;
+            letter-spacing: 3px;
+        }
+
+        .choices button {
+            padding: 20px 40px;
+            margin: 15px;
+            font-size: 1.5em;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(to right, #6a11cb, #2575fc); /* Electric gradient buttons */
+            color: white;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .choices button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        #result {
+            margin-top: 30px;
+            font-size: 2em;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        #score {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+
+        #play-again {
+            margin-top: 30px;
+            padding: 15px 30px;
+            background: linear-gradient(to right, #ff416c, #ff4b2b); /* Fiery play again button */
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            display: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #play-again:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <h1>RPS: Ultimate Showdown</h1>
+        <div class="choices">
+            <button id="rock">Rock ✊</button>
+            <button id="paper">Paper ✋</button>
+            <button id="scissors">Scissors ✌️</button>
+        </div>
+        <div id="result"></div>
+        <div id="score">Player: 0, Computer: 0</div>
+        <button id="play-again">Replay 💥</button>
+    </div>
+
+    <script>
+        const choices = ["rock", "paper", "scissors"];
+        let playerScore = 0;
+        let computerScore = 0;
+
+        function getComputerChoice() {
+            return choices[Math.floor(Math.random() * choices.length)];
+        }
+
+        function determineWinner(playerChoice, computerChoice) {
+            if (playerChoice === computerChoice) {
+                return "tie";
+            } else if (
+                (playerChoice === "rock" && computerChoice === "scissors") ||
+                (playerChoice === "paper" && computerChoice === "rock") ||
+                (playerChoice === "scissors" && computerChoice === "paper")
+            ) {
+                return "player";
+            } else {
+                return "computer";
+            }
+        }
+
+        function updateScore() {
+            document.getElementById("score").textContent = `Player: ${playerScore}, Computer: ${computerScore}`;
+        }
+
+        function displayResult(playerChoice, computerChoice, winner) {
+            const resultDiv = document.getElementById("result");
+            resultDiv.textContent = `You: ${playerChoice} ${playerChoice === "rock" ? "✊" : playerChoice === "paper" ? "✋" : "✌️"} vs. Computer: ${computerChoice} ${computerChoice === "rock" ? "✊" : computerChoice === "paper" ? "✋" : "✌️"}. `;
+
+            if (winner === "player") {
+                resultDiv.textContent += "You WIN! 🏆";
+                playerScore++;
+            } else if (winner === "computer") {
+                resultDiv.textContent += "Computer WINS! 🤖";
+                computerScore++;
+            } else {
+                resultDiv.textContent += "It's a TIE! 🤝";
+            }
+            updateScore();
+            document.getElementById("play-again").style.display = "block";
+        }
+
+        function playRound(playerChoice) {
+            const computerChoice = getComputerChoice();
+            const winner = determineWinner(playerChoice, computerChoice);
+            displayResult(playerChoice, computerChoice, winner);
+        }
+
+        document.getElementById("rock").addEventListener("click", () => playRound("rock"));
+        document.getElementById("paper").addEventListener("click", () => playRound("paper"));
+        document.getElementById("scissors").addEventListener("click", () => playRound("scissors"));
+
+        document.getElementById("play-again").addEventListener("click", () => {
+            playerScore = 0;
+            computerScore = 0;
+            updateScore();
+            document.getElementById("result").textContent = "";
+            document.getElementById("play-again").style.display = "none";
+        });
+
+        updateScore();
+    </script>
+</body>
+</html>
