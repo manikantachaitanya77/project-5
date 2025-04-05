@@ -1,4 +1,4 @@
-# project-5
+# project-5(mt internship in micro iit)
 by using  HTML, CSS, JS, Python
 # Rock-Paper-Scissors Game
 
